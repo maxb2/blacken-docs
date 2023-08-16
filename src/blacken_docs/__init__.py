@@ -15,10 +15,12 @@ from black.mode import TargetVersion
 
 PYGMENTS_PY_LANGS = frozenset(("python", "py", "sage", "python3", "py3", "numpy"))
 PYGMENTS_PY_LANGS_RE_FRAGMENT = f"({'|'.join(PYGMENTS_PY_LANGS)})"
-SIMPLE_BLOCK_HEADERS = PYGMENTS_PY_LANGS_RE_FRAGMENT + r"( .*?)"
-BRACKET_HEADER = r"\{\s*\.python[^\}\n]*?\}"
+PYGMENTS_HEADERS_RE_FRAGMENT = PYGMENTS_PY_LANGS_RE_FRAGMENT + r"( .*?)?"
+BRACKET_HEADERS_RE_FRAGMENT = r"\{\s*\.python[^\}\n]*?\}\s*?"
 MD_RE = re.compile(
-    r"(?P<before>^(?P<indent> *)```\s*" + f"({SIMPLE_BLOCK_HEADERS}|{BRACKET_HEADER})?" + r"\n)"
+    r"(?P<before>^(?P<indent> *)```\s*"
+    f"({PYGMENTS_HEADERS_RE_FRAGMENT}|{BRACKET_HEADERS_RE_FRAGMENT})?"
+    r"\n)"
     r"(?P<code>.*?)"
     r"(?P<after>^(?P=indent)```\s*$)",
     re.DOTALL | re.MULTILINE,
